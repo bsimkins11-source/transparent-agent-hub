@@ -480,10 +480,11 @@ export default function HomePage() {
                   setVideoError(true);
                 }}
               >
+                <source src="/test-video.mp4" type="video/mp4" />
                 <source src="/demo-video.mp4" type="video/mp4" />
                 <source src="/TMDQA.mp4" type="video/mp4" />
                 <source src="/TMDQE.mov" type="video/quicktime" />
-                Your browser does not support the video tag.
+                <p className="text-white p-4">Your browser does not support the video tag. <a href="/test-video.mp4" className="text-blue-400 underline">Download the video</a></p>
               </video>
             )}
             
