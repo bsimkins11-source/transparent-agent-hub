@@ -145,7 +145,7 @@ export default function HomePage() {
                           <div className="relative w-full h-full rounded-xl overflow-hidden shadow-lg bg-gradient-to-br from-blue-50 to-indigo-100">
                             {/* Screen grab from video */}
                             <img 
-                              src="/video-poster.jpg"
+                              src="/audience-poster.jpg"
                               alt="Audience Agent Demo"
                               className="w-full h-full object-cover"
                               onLoad={() => console.log('Poster image loaded successfully')}
@@ -525,7 +525,8 @@ export default function HomePage() {
                   autoPlay
                   playsInline
                   preload="metadata"
-                  poster="/video-poster.jpg"
+                  poster="/audience-poster.jpg"
+                  src="/demo-video.mp4"
                   onLoadStart={() => console.log('Video loading started')}
                   onLoadedData={() => console.log('Video data loaded')}
                   onCanPlay={() => console.log('Video can play')}
@@ -541,9 +542,6 @@ export default function HomePage() {
                     setVideoError(true);
                   }}
                 >
-                  <source src="/demo-video.mp4" type="video/mp4" />
-                  <source src="/test-video.mp4" type="video/mp4" />
-                  <source src="/TP_Audience_Agent_Demo_925.mp4" type="video/mp4" />
                   <p>Your browser does not support the video tag.</p>
                 </video>
                 
