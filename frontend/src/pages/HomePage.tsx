@@ -35,6 +35,7 @@ export default function HomePage() {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const showSlide = (index: number) => {
@@ -434,23 +435,56 @@ export default function HomePage() {
       {showVideoModal && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
           <div className="relative w-full max-w-4xl bg-black rounded-lg overflow-hidden">
-            <video 
-              ref={videoRef}
-              className="w-full h-auto"
-              controls
-              autoPlay
-              playsInline
-              webkit-playsinline="true"
-              onPlay={() => setIsVideoPlaying(true)}
-              onPause={() => setIsVideoPlaying(false)}
-              onEnded={() => {
-                setIsVideoPlaying(false);
-                setShowVideoModal(false);
-              }}
-            >
-              <source src="/TMDQA.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            {videoError ? (
+              <div className="p-8 text-center text-white">
+                <div className="text-6xl mb-4">🎥</div>
+                <h3 className="text-2xl font-bold mb-4">Video Not Available</h3>
+                <p className="text-gray-300 mb-6">The video demo is currently unavailable. Please try again later.</p>
+                <button
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-all"
+                  onClick={() => {
+                    setShowVideoModal(false);
+                    setVideoError(false);
+                  }}
+                >
+                  Close
+                </button>
+              </div>
+            ) : (
+              <video 
+                ref={videoRef}
+                className="w-full h-auto"
+                controls
+                autoPlay
+                playsInline
+                webkit-playsinline="true"
+                onLoadStart={() => console.log('Video loading started')}
+                onLoadedData={() => console.log('Video data loaded')}
+                onCanPlay={() => console.log('Video can play')}
+                onPlay={() => {
+                  console.log('Video started playing');
+                  setIsVideoPlaying(true);
+                }}
+                onPause={() => {
+                  console.log('Video paused');
+                  setIsVideoPlaying(false);
+                }}
+                onEnded={() => {
+                  console.log('Video ended');
+                  setIsVideoPlaying(false);
+                  setShowVideoModal(false);
+                }}
+                onError={(e) => {
+                  console.error('Video error:', e);
+                  console.error('Video error details:', e.currentTarget.error);
+                  setVideoError(true);
+                }}
+              >
+                <source src="/TMDQA.mp4" type="video/mp4" />
+                <source src="/TMDQE.mov" type="video/quicktime" />
+                Your browser does not support the video tag.
+              </video>
+            )}
             
             {/* Close button */}
             <button
@@ -458,6 +492,7 @@ export default function HomePage() {
               onClick={() => {
                 setShowVideoModal(false);
                 setIsVideoPlaying(false);
+                setVideoError(false);
                 if (videoRef.current) {
                   videoRef.current.pause();
                 }
