@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { 
   MagnifyingGlassIcon,
@@ -34,9 +34,31 @@ export default function HomePage() {
   const isAuthRedirect = searchParams.get('auth_required') === 'true';
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
+  // Preload video on component mount
+  useEffect(() => {
+    const preloadVideo = () => {
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.src = '/TP_Audience_Agent_Demo_925.mp4';
+      video.muted = true;
+      
+      video.addEventListener('loadeddata', () => {
+        console.log('Video preloaded successfully');
+        setIsVideoLoaded(true);
+      });
+      
+      video.addEventListener('error', (e) => {
+        console.error('Video preload error:', e);
+      });
+      
+      // Start loading
+      video.load();
+    };
 
-
+    preloadVideo();
+  }, []);
 
   const showSlide = (index: number) => {
     setCurrentSlideIndex(index);
@@ -138,7 +160,7 @@ export default function HomePage() {
                               }}
                               className="w-full h-full object-cover"
                               controls
-                              preload="metadata"
+                              preload="auto"
                               poster="/transparent-partners-logo.png"
                               playsInline
                               webkit-playsinline="true"
@@ -172,6 +194,10 @@ export default function HomePage() {
                                 className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 cursor-pointer hover:bg-opacity-30 transition-all"
                                 onClick={async (e) => {
                                   e.preventDefault();
+                                  if (!isVideoLoaded) {
+                                    console.log('Video not loaded yet, ignoring click');
+                                    return;
+                                  }
                                   console.log('Play button clicked!');
                                   const video = e.currentTarget.parentElement?.querySelector('video') as HTMLVideoElement;
                                   console.log('Video element found:', video);
@@ -203,9 +229,15 @@ export default function HomePage() {
                               <div className="text-center text-white">
                                 <div className="text-6xl mb-4">🎯</div>
                                 <h3 className="text-2xl font-bold mb-2">Audience Agent Demo</h3>
-                                <p className="text-lg mb-4">Click play to watch the demo</p>
+                                <p className="text-lg mb-4">
+                                  {isVideoLoaded ? 'Click play to watch the demo' : 'Loading video...'}
+                                </p>
                                 <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto hover:bg-opacity-30 transition-all">
-                                  <div className="w-0 h-0 border-l-[12px] border-l-white border-y-[8px] border-y-transparent ml-1"></div>
+                                  {isVideoLoaded ? (
+                                    <div className="w-0 h-0 border-l-[12px] border-l-white border-y-[8px] border-y-transparent ml-1"></div>
+                                  ) : (
+                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                                  )}
                                 </div>
                               </div>
                             </div>
