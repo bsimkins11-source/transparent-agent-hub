@@ -1281,7 +1281,7 @@ export default function SuperAdminDashboard() {
               </div>
               <p className="text-sm text-gray-700 mb-3">Access Project Harmony & Symphony marketing agents with full Coca-Cola branding</p>
               <div className="flex items-center justify-between">
-                <span className="text-xs text-red-600 font-medium">🎨 Coke Red Theme</span>
+                <span className="text-xs text-red-600 font-medium">🎨 Brand Red Theme</span>
                 <span className="text-xs text-red-600 font-medium font-semibold">→ Access Library</span>
               </div>
             </Link>
@@ -1524,7 +1524,7 @@ export default function SuperAdminDashboard() {
                             </Link>
                           </div>
                           <p className="text-xs text-red-600 mt-2">
-                            Access Project Harmony & Symphony agents with full Coca-Cola branding and Coke Red theme
+                            Access Project Harmony & Symphony agents with full brand branding and Brand Red theme
                           </p>
                         </div>
                       )}

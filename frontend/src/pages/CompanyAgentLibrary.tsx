@@ -152,17 +152,10 @@ export default function CompanyAgentLibrary() {
         setAgents(agents);
         setFilteredAgents(agents);
         
-        // Set company-specific categories and tags
-        if (companyId === 'coca-cola') {
-          setCategories(['Brand Marketing', 'Marketing Operations', 'Campaign Development', 'Brand Intelligence', 'Social Media', 'Consumer Intelligence', 'Event Management']);
-          setProviders(['openai', 'anthropic']);
-          setAvailableTags(['brand-harmony', 'messaging', 'tone', 'visual-identity', 'consistency', 'coca-cola', 'marketing-orchestration', 'multi-channel', 'customer-journey', 'campaign-coordination', 'synchronization', 'campaign-creation', 'social-media', 'promotional', 'content-generation', 'brand-analytics', 'sentiment-analysis', 'market-share', 'campaign-effectiveness', 'global-markets', 'conversation-monitoring', 'platform-management', 'engagement', 'customer-insights', 'behavior-analysis', 'consumer-preferences', 'trends', 'purchasing-patterns', 'event-planning', 'product-launches', 'promotional-activities', 'coordination', 'brand-events']);
-        } else {
-          // Transparent Partners or other companies
-          setCategories(['AI Development', 'Agent Management', 'Security & Compliance', 'Performance Monitoring', 'Data Management', 'Integration Services']);
-          setProviders(['google', 'openai', 'anthropic']);
-          setAvailableTags(['ai-development', 'agent-management', 'security', 'compliance', 'performance', 'monitoring', 'data-management', 'integration', 'transparent-partners', 'enterprise', 'scalability', 'reliability']);
-        }
+        // Set generic categories and tags
+        setCategories(['Brand Marketing', 'Marketing Operations', 'Campaign Development', 'Brand Intelligence', 'Social Media', 'Consumer Intelligence', 'Event Management', 'AI Development', 'Agent Management', 'Security & Compliance', 'Performance Monitoring', 'Data Management', 'Integration Services']);
+        setProviders(['google', 'openai', 'anthropic']);
+        setAvailableTags(['brand-harmony', 'messaging', 'tone', 'visual-identity', 'consistency', 'marketing', 'marketing-orchestration', 'multi-channel', 'customer-journey', 'campaign-coordination', 'synchronization', 'campaign-creation', 'social-media', 'promotional', 'content-generation', 'brand-analytics', 'sentiment-analysis', 'market-share', 'campaign-effectiveness', 'global-markets', 'conversation-monitoring', 'platform-management', 'engagement', 'customer-insights', 'behavior-analysis', 'consumer-preferences', 'trends', 'purchasing-patterns', 'event-planning', 'product-launches', 'promotional-activities', 'coordination', 'brand-events', 'ai-development', 'agent-management', 'security', 'compliance', 'performance', 'monitoring', 'data-management', 'integration', 'enterprise', 'scalability', 'reliability']);
         
         setLoading(false);
         return;
@@ -171,91 +164,77 @@ export default function CompanyAgentLibrary() {
       console.error(`Error loading ${companyId} agents:`, error);
     }
     
-    // Fallback to company-specific mock agents if libraryService fails
-    let mockAgents: Agent[];
-    
-    if (companyId === 'coca-cola') {
-      mockAgents = [
-        {
-          id: 'project-harmony',
-          name: 'Project Harmony',
-          description: 'Coca-Cola\'s AI-powered brand harmony agent that ensures consistent messaging, tone, and visual identity across all marketing campaigns and touchpoints.',
-          provider: 'openai',
-          route: '/agents/project-harmony',
-          visibility: 'company',
-          status: 'approved',
-          metadata: {
-            tags: ['brand-harmony', 'messaging', 'tone', 'visual-identity', 'consistency', 'coca-cola'],
-            category: 'Brand Marketing',
-            tier: 'premium',
-            permissionType: 'approval'
-          }
-        },
-        {
-          id: 'project-symphony',
-          name: 'Project Symphony',
-          description: 'Coca-Cola\'s AI marketing orchestration agent that coordinates multi-channel campaigns, synchronizes messaging, and optimizes customer journey touchpoints.',
-          provider: 'anthropic',
-          route: '/agents/project-symphony',
-          visibility: 'company',
-          status: 'approved',
-          metadata: {
-            tags: ['marketing-orchestration', 'multi-channel', 'customer-journey', 'campaign-coordination', 'synchronization', 'coca-cola'],
-            category: 'Marketing Operations',
-            tier: 'premium',
-            permissionType: 'approval'
-          }
+    // Fallback to generic mock agents if libraryService fails
+    const mockAgents: Agent[] = [
+      {
+        id: 'brand-harmony-agent',
+        name: 'Brand Harmony Agent',
+        description: 'AI-powered brand harmony agent that ensures consistent messaging, tone, and visual identity across all marketing campaigns and touchpoints.',
+        provider: 'openai',
+        route: '/agents/brand-harmony-agent',
+        visibility: 'global',
+        status: 'approved',
+        metadata: {
+          tags: ['brand-harmony', 'messaging', 'tone', 'visual-identity', 'consistency', 'marketing'],
+          category: 'Brand Marketing',
+          tier: 'premium',
+          permissionType: 'approval'
         }
-      ];
-    } else {
-      // Transparent Partners agents
-      mockAgents = [
-        {
-          id: 'ai-hub-manager',
-          name: 'AI Hub Manager',
-          description: 'Transparent Partners\' AI hub management agent that orchestrates and coordinates all AI agents across the platform.',
-          provider: 'google',
-          route: '/agents/ai-hub-manager',
-          visibility: 'company',
-          status: 'approved',
-          metadata: {
-            tags: ['ai-development', 'agent-management', 'orchestration', 'transparent-partners'],
-            category: 'AI Development',
-            tier: 'premium',
-            permissionType: 'approval'
-          }
-        },
-        {
-          id: 'security-compliance',
-          name: 'Security & Compliance',
-          description: 'Transparent Partners\' security and compliance agent that ensures all AI operations meet enterprise security standards.',
-          provider: 'openai',
-          route: '/agents/security-compliance',
-          visibility: 'company',
-          status: 'approved',
-          metadata: {
-            tags: ['security', 'compliance', 'enterprise', 'transparent-partners'],
-            category: 'Security & Compliance',
-            tier: 'premium',
-            permissionType: 'approval'
-          }
+      },
+      {
+        id: 'marketing-orchestration-agent',
+        name: 'Marketing Orchestration Agent',
+        description: 'AI marketing orchestration agent that coordinates multi-channel campaigns, synchronizes messaging, and optimizes customer journey touchpoints.',
+        provider: 'anthropic',
+        route: '/agents/marketing-orchestration-agent',
+        visibility: 'global',
+        status: 'approved',
+        metadata: {
+          tags: ['marketing-orchestration', 'multi-channel', 'customer-journey', 'campaign-coordination', 'synchronization', 'marketing'],
+          category: 'Marketing Operations',
+          tier: 'premium',
+          permissionType: 'approval'
         }
-      ];
-    }
+      },
+      {
+        id: 'ai-hub-manager',
+        name: 'AI Hub Manager',
+        description: 'AI hub management agent that orchestrates and coordinates all AI agents across the platform.',
+        provider: 'google',
+        route: '/agents/ai-hub-manager',
+        visibility: 'global',
+        status: 'approved',
+        metadata: {
+          tags: ['ai-development', 'agent-management', 'orchestration'],
+          category: 'AI Development',
+          tier: 'premium',
+          permissionType: 'approval'
+        }
+      },
+      {
+        id: 'security-compliance',
+        name: 'Security & Compliance',
+        description: 'Security and compliance agent that ensures all AI operations meet enterprise security standards.',
+        provider: 'openai',
+        route: '/agents/security-compliance',
+        visibility: 'global',
+        status: 'approved',
+        metadata: {
+          tags: ['security', 'compliance', 'enterprise'],
+          category: 'Security & Compliance',
+          tier: 'premium',
+          permissionType: 'approval'
+        }
+      }
+    ];
      
     setAgents(mockAgents);
     setFilteredAgents(mockAgents);
     
-    // Set categories and tags based on company
-    if (companyId === 'coca-cola') {
-      setCategories(['Brand Marketing', 'Marketing Operations', 'Campaign Development', 'Brand Intelligence', 'Social Media', 'Consumer Intelligence', 'Event Management']);
-      setProviders(['openai', 'anthropic']);
-      setAvailableTags(['brand-harmony', 'messaging', 'tone', 'visual-identity', 'consistency', 'coca-cola', 'marketing-orchestration', 'multi-channel', 'customer-journey', 'campaign-coordination', 'synchronization', 'campaign-creation', 'social-media', 'promotional', 'content-generation', 'brand-analytics', 'sentiment-analysis', 'market-share', 'campaign-effectiveness', 'global-markets', 'conversation-monitoring', 'platform-management', 'engagement', 'customer-insights', 'behavior-analysis', 'consumer-preferences', 'trends', 'purchasing-patterns', 'event-planning', 'product-launches', 'promotional-activities', 'coordination', 'brand-events']);
-    } else {
-      setCategories(['AI Development', 'Agent Management', 'Security & Compliance', 'Performance Monitoring', 'Data Management', 'Integration Services']);
-      setProviders(['google', 'openai', 'anthropic']);
-      setAvailableTags(['ai-development', 'agent-management', 'security', 'compliance', 'performance', 'monitoring', 'data-management', 'integration', 'transparent-partners', 'enterprise', 'scalability', 'reliability']);
-    }
+    // Set generic categories and tags for all companies
+    setCategories(['Brand Marketing', 'Marketing Operations', 'Campaign Development', 'Brand Intelligence', 'Social Media', 'Consumer Intelligence', 'Event Management', 'AI Development', 'Agent Management', 'Security & Compliance', 'Performance Monitoring', 'Data Management', 'Integration Services']);
+    setProviders(['google', 'openai', 'anthropic']);
+    setAvailableTags(['brand-harmony', 'messaging', 'tone', 'visual-identity', 'consistency', 'marketing', 'marketing-orchestration', 'multi-channel', 'customer-journey', 'campaign-coordination', 'synchronization', 'campaign-creation', 'social-media', 'promotional', 'content-generation', 'brand-analytics', 'sentiment-analysis', 'market-share', 'campaign-effectiveness', 'global-markets', 'conversation-monitoring', 'platform-management', 'engagement', 'customer-insights', 'behavior-analysis', 'consumer-preferences', 'trends', 'purchasing-patterns', 'event-planning', 'product-launches', 'promotional-activities', 'coordination', 'brand-events', 'ai-development', 'agent-management', 'security', 'compliance', 'performance', 'monitoring', 'data-management', 'integration', 'enterprise', 'scalability', 'reliability']);
     
     setLoading(false);
   };

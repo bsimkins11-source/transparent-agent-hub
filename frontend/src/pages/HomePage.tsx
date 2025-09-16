@@ -124,12 +124,17 @@ export default function HomePage() {
                 {currentSlideIndex === 0 && (
                   <div className="video-slide bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
                     <div className="grid grid-cols-3 gap-6 h-full">
-                      {/* Left 2/3 - Card Placeholder */}
+                      {/* Left 2/3 - Video Demo */}
                       <div className="col-span-2 flex items-center justify-center">
-                        <div className="bg-white/90 rounded-2xl p-6 shadow-xl border border-blue-200 text-center w-full h-full flex flex-col justify-center">
-                          <div className="text-6xl mb-4">🎯</div>
-                          <h3 className="text-2xl font-bold text-gray-900 mb-3">Demo Card</h3>
-                          <p className="text-gray-600">Interactive demonstration content will go here</p>
+                        <div className="bg-white/90 rounded-2xl p-6 shadow-xl border border-blue-200 w-full h-full flex flex-col justify-center">
+                          <video 
+                            className="w-full h-full rounded-xl object-cover shadow-lg"
+                            controls
+                            poster="/transparent-partners-logo.png"
+                          >
+                            <source src="/TP_Audience_Agent_Demo_925.mp4" type="video/mp4" />
+                            Your browser does not support the video tag.
+                          </video>
                         </div>
                       </div>
                       {/* Right 1/3 - Agent Info */}
@@ -137,17 +142,31 @@ export default function HomePage() {
                         <div className="bg-white/90 rounded-xl p-5 shadow-lg border border-blue-200 h-full flex flex-col justify-center">
                           <div className="flex items-center mb-4">
                             <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center mr-3">
-                              <span className="text-white text-xl">🤖</span>
+                              <span className="text-white text-xl">🎯</span>
                             </div>
                             <div>
-                              <h4 className="font-bold text-gray-900">AI Agent Hub</h4>
-                              <p className="text-sm text-blue-600">Core Platform</p>
+                              <h4 className="font-bold text-gray-900">Audience Agent Demo</h4>
+                              <p className="text-sm text-blue-600">AI-Powered Targeting</p>
                             </div>
                           </div>
-                          <p className="text-sm text-gray-700 leading-relaxed">
-                            Your central platform for discovering and managing intelligent AI agents. 
-                            Built for transparency, designed for results.
+                          <p className="text-sm text-gray-700 leading-relaxed mb-4">
+                            Watch how our Audience Agent intelligently analyzes and segments your target audience, 
+                            providing deep insights into customer behavior, preferences, and engagement patterns.
                           </p>
+                          <div className="space-y-2">
+                            <div className="flex items-center text-xs text-gray-600">
+                              <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                              Real-time audience analysis
+                            </div>
+                            <div className="flex items-center text-xs text-gray-600">
+                              <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                              Behavioral pattern recognition
+                            </div>
+                            <div className="flex items-center text-xs text-gray-600">
+                              <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                              Personalized targeting recommendations
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
