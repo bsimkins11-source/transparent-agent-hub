@@ -127,14 +127,32 @@ export default function HomePage() {
                       {/* Left 2/3 - Video Demo */}
                       <div className="col-span-2 flex items-center justify-center">
                         <div className="bg-white/90 rounded-2xl p-6 shadow-xl border border-blue-200 w-full h-full flex flex-col justify-center">
-                          <video 
-                            className="w-full h-full rounded-xl object-cover shadow-lg"
-                            controls
-                            poster="/transparent-partners-logo.png"
-                          >
-                            <source src="/TP_Audience_Agent_Demo_925.mp4" type="video/mp4" />
-                            Your browser does not support the video tag.
-                          </video>
+                          <div className="relative w-full h-full rounded-xl overflow-hidden shadow-lg bg-gradient-to-br from-blue-50 to-indigo-100">
+                            <video 
+                              className="w-full h-full object-cover"
+                              controls
+                              preload="none"
+                              poster="/transparent-partners-logo.png"
+                              playsInline
+                              webkit-playsinline="true"
+                              onError={(e) => console.error('Video error:', e)}
+                              onLoadStart={() => console.log('Video loading started')}
+                              onCanPlay={() => console.log('Video can play')}
+                            >
+                              <source src="/TP_Audience_Agent_Demo_925.mp4" type="video/mp4" />
+                              Your browser does not support the video tag.
+                            </video>
+                            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20">
+                              <div className="text-center text-white">
+                                <div className="text-6xl mb-4">🎯</div>
+                                <h3 className="text-2xl font-bold mb-2">Audience Agent Demo</h3>
+                                <p className="text-lg mb-4">Click play to watch the demo</p>
+                                <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto cursor-pointer hover:bg-opacity-30 transition-all">
+                                  <div className="w-0 h-0 border-l-[12px] border-l-white border-y-[8px] border-y-transparent ml-1"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       {/* Right 1/3 - Agent Info */}
