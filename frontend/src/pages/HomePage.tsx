@@ -37,9 +37,9 @@ export default function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const videoSources = [
-    '/TP_Audience_Agent_Demo_925.mp4',
-    '/demo-video.mp4', 
+    '/demo-video.mp4',  // Try smaller video first
     '/test-video.mp4',
+    '/TP_Audience_Agent_Demo_925.mp4',  // Move large video to fallback
     '/TMDQA.mp4',
     '/TMDQE.mov'
   ];
@@ -149,7 +149,7 @@ export default function HomePage() {
                           <div className="relative w-full h-full rounded-xl overflow-hidden shadow-lg bg-gradient-to-br from-blue-50 to-indigo-100">
                             {/* Screen grab from video */}
                             <img 
-                              src="/video-poster.jpg"
+                              src="/audience-poster.jpg"
                               alt="Audience Agent Demo"
                               className="w-full h-full object-cover"
                               onLoad={() => console.log('Poster image loaded successfully')}
@@ -530,7 +530,7 @@ export default function HomePage() {
                   autoPlay
                   playsInline
                   preload="metadata"
-                  poster="/video-poster.jpg"
+                  poster="/audience-poster.jpg"
                   src={videoSources[currentVideoSource]}
                   onLoadStart={() => {
                     console.log('Video loading started');
@@ -563,6 +563,8 @@ export default function HomePage() {
                     console.error('Video error:', e);
                     console.error('Video error details:', e.currentTarget.error);
                     console.error('Video src attempted:', e.currentTarget.src);
+                    console.error('Video error code:', e.currentTarget.error?.code);
+                    console.error('Video error message:', e.currentTarget.error?.message);
                     
                     // Try next video source
                     if (currentVideoSource < videoSources.length - 1) {
