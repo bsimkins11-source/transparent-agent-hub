@@ -148,7 +148,18 @@ export default function HomePage() {
                             {/* Play button overlay */}
                             <div 
                               className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 hover:bg-opacity-30 transition-all cursor-pointer group"
-                              onClick={() => window.open('/demo-video.mp4', '_blank')}
+                              onClick={() => {
+                                // Try local video first, fallback to external
+                                const videoUrl = '/demo-video.mp4';
+                                const newWindow = window.open(videoUrl, '_blank');
+                                
+                                // If video fails to load, show fallback
+                                setTimeout(() => {
+                                  if (newWindow && newWindow.closed) {
+                                    alert('Video not available. Please try the test page: /test-video-access.html');
+                                  }
+                                }, 2000);
+                              }}
                             >
                               <div className="text-center text-white">
                                 <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-opacity-30 transition-all">
