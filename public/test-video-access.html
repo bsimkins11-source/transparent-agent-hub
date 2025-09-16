@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Access Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
+        .test { background: white; padding: 20px; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .success { color: green; }
+        .error { color: red; }
+        video { width: 100%; max-width: 500px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Video Access Test</h1>
+    
+    <div class="test">
+        <h3>Test 1: Direct Video Link</h3>
+        <p><a href="/demo-video.mp4" target="_blank">Open demo-video.mp4 in new tab</a></p>
+        <p><a href="/test-video.mp4" target="_blank">Open test-video.mp4 in new tab</a></p>
+    </div>
+    
+    <div class="test">
+        <h3>Test 2: Embedded Video</h3>
+        <video controls>
+            <source src="/demo-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <div class="test">
+        <h3>Test 3: Video with Poster</h3>
+        <video controls poster="/audience-poster.jpg">
+            <source src="/demo-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <div class="test">
+        <h3>Test 4: Check File Accessibility</h3>
+        <div id="results"></div>
+    </div>
+    
+    <script>
+        // Test if video files are accessible
+        const videos = [
+            '/demo-video.mp4',
+            '/test-video.mp4', 
+            '/TP_Audience_Agent_Demo_925.mp4',
+            '/audience-poster.jpg'
+        ];
+        
+        const resultsDiv = document.getElementById('results');
+        
+        videos.forEach(videoSrc => {
+            fetch(videoSrc)
+                .then(response => {
+                    if (response.ok) {
+                        resultsDiv.innerHTML += `<p class="success">✅ ${videoSrc} - OK (${response.status})</p>`;
+                    } else {
+                        resultsDiv.innerHTML += `<p class="error">❌ ${videoSrc} - Failed (${response.status})</p>`;
+                    }
+                })
+                .catch(error => {
+                    resultsDiv.innerHTML += `<p class="error">❌ ${videoSrc} - Error: ${error.message}</p>`;
+                });
+        });
+    </script>
+</body>
+</html>

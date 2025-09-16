@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Video Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        video { width: 400px; height: 300px; border: 2px solid #ccc; margin: 10px; }
+        .test { margin: 20px 0; padding: 10px; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>Simple Video Test</h1>
+    
+    <div class="test">
+        <h3>Test 1: Basic video with controls</h3>
+        <video controls>
+            <source src="/demo-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <div class="test">
+        <h3>Test 2: Video with autoplay (might be blocked)</h3>
+        <video controls autoplay muted>
+            <source src="/demo-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <div class="test">
+        <h3>Test 3: Video with poster</h3>
+        <video controls poster="/audience-poster.jpg">
+            <source src="/demo-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <script>
+        // Test video loading
+        const video = document.querySelector('video');
+        
+        video.addEventListener('loadstart', () => console.log('Load start'));
+        video.addEventListener('loadeddata', () => console.log('Loaded data'));
+        video.addEventListener('canplay', () => console.log('Can play'));
+        video.addEventListener('play', () => console.log('Playing'));
+        video.addEventListener('error', (e) => {
+            console.error('Video error:', e);
+            console.error('Error details:', e.target.error);
+        });
+    </script>
+</body>
+</html>
