@@ -458,8 +458,14 @@ export default function HomePage() {
                 className="w-full h-auto max-h-[70vh]"
                 controls
                 autoPlay
+                muted
                 playsInline
                 poster="/audience-poster.jpg"
+                ref={(video) => {
+                  if (video) {
+                    video.play().catch(console.log);
+                  }
+                }}
               >
                 <source src="/demo-video.mp4" type="video/mp4" />
                 <source src="/test-video.mp4" type="video/mp4" />
