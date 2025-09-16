@@ -127,25 +127,24 @@ export default function HomePage() {
                       <div className="col-span-2 flex items-center justify-center">
                         <div className="bg-white/90 rounded-2xl p-6 shadow-xl border border-blue-200 w-full h-full flex flex-col justify-center">
                           <div className="relative w-full h-full rounded-xl overflow-hidden shadow-lg bg-gradient-to-br from-blue-50 to-indigo-100">
-                            {/* Simple video test */}
                             <video 
-                              ref={videoRef}
                               className="w-full h-full object-cover"
                               controls
-                              preload="auto"
+                              preload="metadata"
+                              poster="/transparent-partners-logo.png"
                               playsInline
-                              style={{ backgroundColor: '#000' }}
+                              webkit-playsinline="true"
+                              onPlay={() => setIsVideoPlaying(true)}
+                              onPause={() => setIsVideoPlaying(false)}
+                              onEnded={() => setIsVideoPlaying(false)}
                             >
                               <source src="/TMDQA.mp4" type="video/mp4" />
-                              <source src="/TMDQE.mov" type="video/quicktime" />
                               Your browser does not support the video tag.
                             </video>
                             
-                            {/* Simple overlay for demo purposes */}
-                            <div 
-                              className="absolute top-4 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded text-sm"
-                            >
-                              Audience Agent Demo
+                            {/* Demo overlay */}
+                            <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                              🎯 Audience Agent Demo
                             </div>
                           </div>
                         </div>
