@@ -523,9 +523,8 @@ export default function HomePage() {
                   ref={videoRef}
                   className="w-full h-auto max-h-[80vh]"
                   controls
-                  autoPlay
                   playsInline
-                  preload="auto"
+                  preload="metadata"
                   poster="/audience-poster.jpg"
                   onLoadStart={() => {
                     console.log('Video loading started');
@@ -574,6 +573,22 @@ export default function HomePage() {
                       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
                       <p>Loading video...</p>
                     </div>
+                  </div>
+                )}
+                
+                {/* Manual play button overlay */}
+                {!videoLoading && !isVideoPlaying && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20">
+                    <button
+                      onClick={() => {
+                        if (videoRef.current) {
+                          videoRef.current.play();
+                        }
+                      }}
+                      className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-8 py-4 rounded-lg font-medium transition-all transform hover:scale-105"
+                    >
+                      ▶️ Play Video
+                    </button>
                   </div>
                 )}
               </div>
