@@ -37,11 +37,7 @@ export default function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const videoSources = [
-    '/demo-video.mp4',  // Try smaller video first
-    '/test-video.mp4',
-    '/TP_Audience_Agent_Demo_925.mp4',  // Move large video to fallback
-    '/TMDQA.mp4',
-    '/TMDQE.mov'
+    '/demo-video.mp4'
   ];
 
   console.log('Available video sources:', videoSources);
@@ -149,7 +145,7 @@ export default function HomePage() {
                           <div className="relative w-full h-full rounded-xl overflow-hidden shadow-lg bg-gradient-to-br from-blue-50 to-indigo-100">
                             {/* Screen grab from video */}
                             <img 
-                              src="/audience-poster.jpg"
+                              src="/video-poster.jpg"
                               alt="Audience Agent Demo"
                               className="w-full h-full object-cover"
                               onLoad={() => console.log('Poster image loaded successfully')}
@@ -523,15 +519,13 @@ export default function HomePage() {
             ) : (
               <div className="relative">
                 <video 
-                  key={currentVideoSource}
                   ref={videoRef}
                   className="w-full h-auto max-h-[80vh]"
                   controls
                   autoPlay
                   playsInline
                   preload="metadata"
-                  poster="/audience-poster.jpg"
-                  src={videoSources[currentVideoSource]}
+                  poster="/video-poster.jpg"
                   onLoadStart={() => {
                     console.log('Video loading started');
                     setVideoLoading(true);
@@ -562,29 +556,14 @@ export default function HomePage() {
                   onError={(e) => {
                     console.error('Video error:', e);
                     console.error('Video error details:', e.currentTarget.error);
-                    console.error('Video src attempted:', e.currentTarget.src);
-                    console.error('Video error code:', e.currentTarget.error?.code);
-                    console.error('Video error message:', e.currentTarget.error?.message);
-                    
-                    // Try next video source
-                    if (currentVideoSource < videoSources.length - 1) {
-                      console.log(`Trying next video source: ${currentVideoSource + 1}`);
-                      setCurrentVideoSource(currentVideoSource + 1);
-                      setVideoError(false);
-                      setVideoLoading(true);
-                    } else {
-                      console.log('All video sources failed');
-                      setVideoError(true);
-                      setVideoLoading(false);
-                    }
-                  }}
-                  onAbort={() => {
-                    console.log('Video loading aborted');
                     setVideoError(true);
                     setVideoLoading(false);
                   }}
                 >
-                  <p className="text-white p-4">Your browser does not support the video tag. <a href={videoSources[currentVideoSource]} className="text-blue-400 underline">Download the video</a></p>
+                  <source src="/demo-video.mp4" type="video/mp4" />
+                  <source src="/test-video.mp4" type="video/mp4" />
+                  <source src="/TP_Audience_Agent_Demo_925.mp4" type="video/mp4" />
+                  <p>Your browser does not support the video tag.</p>
                 </video>
                 
                 {/* Loading indicator */}
