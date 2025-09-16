@@ -127,53 +127,25 @@ export default function HomePage() {
                       <div className="col-span-2 flex items-center justify-center">
                         <div className="bg-white/90 rounded-2xl p-6 shadow-xl border border-blue-200 w-full h-full flex flex-col justify-center">
                           <div className="relative w-full h-full rounded-xl overflow-hidden shadow-lg bg-gradient-to-br from-blue-50 to-indigo-100">
+                            {/* Simple video test */}
                             <video 
                               ref={videoRef}
                               className="w-full h-full object-cover"
                               controls
-                              preload="metadata"
-                              poster="/transparent-partners-logo.png"
+                              preload="auto"
                               playsInline
-                              onPlay={() => {
-                                console.log('Video play event triggered');
-                                setIsVideoPlaying(true);
-                              }}
-                              onPause={() => {
-                                console.log('Video pause event triggered');
-                                setIsVideoPlaying(false);
-                              }}
-                              onEnded={() => {
-                                console.log('Video end event triggered');
-                                setIsVideoPlaying(false);
-                              }}
+                              style={{ backgroundColor: '#000' }}
                             >
                               <source src="/TMDQA.mp4" type="video/mp4" />
+                              <source src="/TMDQE.mov" type="video/quicktime" />
                               Your browser does not support the video tag.
                             </video>
+                            
+                            {/* Simple overlay for demo purposes */}
                             <div 
-                              className={`absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 cursor-pointer hover:bg-opacity-30 transition-all ${isVideoPlaying ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
-                              onClick={() => {
-                                console.log('Play button clicked, video ref:', videoRef.current);
-                                if (videoRef.current) {
-                                  console.log('Attempting to play video...');
-                                  videoRef.current.play().then(() => {
-                                    console.log('Video play promise resolved');
-                                  }).catch((error) => {
-                                    console.error('Video play promise rejected:', error);
-                                  });
-                                } else {
-                                  console.error('Video ref is null');
-                                }
-                              }}
+                              className="absolute top-4 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded text-sm"
                             >
-                              <div className="text-center text-white">
-                                <div className="text-6xl mb-4">🎯</div>
-                                <h3 className="text-2xl font-bold mb-2">Audience Agent Demo</h3>
-                                <p className="text-lg mb-4">Click play to watch the demo</p>
-                                <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto hover:bg-opacity-30 transition-all">
-                                  <div className="w-0 h-0 border-l-[12px] border-l-white border-y-[8px] border-y-transparent ml-1"></div>
-                                </div>
-                              </div>
+                              Audience Agent Demo
                             </div>
                           </div>
                         </div>
