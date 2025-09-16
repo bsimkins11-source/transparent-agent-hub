@@ -127,24 +127,33 @@ export default function HomePage() {
                       <div className="col-span-2 flex items-center justify-center">
                         <div className="bg-white/90 rounded-2xl p-6 shadow-xl border border-blue-200 w-full h-full flex flex-col justify-center">
                           <div className="relative w-full h-full rounded-xl overflow-hidden shadow-lg bg-gradient-to-br from-blue-50 to-indigo-100">
-                            <video 
+                            {/* Freeze frame from video */}
+                            <img 
+                              src="/video-poster.jpg"
+                              alt="Audience Agent Demo"
                               className="w-full h-full object-cover"
-                              controls
-                              preload="metadata"
-                              poster="/transparent-partners-logo.png"
-                              playsInline
-                              webkit-playsinline="true"
-                              onPlay={() => setIsVideoPlaying(true)}
-                              onPause={() => setIsVideoPlaying(false)}
-                              onEnded={() => setIsVideoPlaying(false)}
-                            >
-                              <source src="/TMDQA.mp4" type="video/mp4" />
-                              Your browser does not support the video tag.
-                            </video>
+                            />
                             
-                            {/* Demo overlay */}
+                            {/* Play button overlay */}
+                            <div 
+                              className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 hover:bg-opacity-30 transition-all cursor-pointer group"
+                              onClick={() => {
+                                // Open video in new tab
+                                window.open('/TMDQA.mp4', '_blank');
+                              }}
+                            >
+                              <div className="text-center text-white">
+                                <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-opacity-30 transition-all">
+                                  <div className="w-0 h-0 border-l-[16px] border-l-white border-y-[12px] border-y-transparent ml-1"></div>
+                                </div>
+                                <h3 className="text-xl font-bold mb-2">Audience Agent Demo</h3>
+                                <p className="text-sm opacity-90">Click to watch the demo</p>
+                              </div>
+                            </div>
+                            
+                            {/* Demo label */}
                             <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-4 py-2 rounded-lg text-sm font-medium">
-                              🎯 Audience Agent Demo
+                              🎯 Live Demo
                             </div>
                           </div>
                         </div>
