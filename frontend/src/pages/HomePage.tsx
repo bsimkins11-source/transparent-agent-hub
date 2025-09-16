@@ -526,38 +526,19 @@ export default function HomePage() {
                   playsInline
                   preload="metadata"
                   poster="/video-poster.jpg"
-                  onLoadStart={() => {
-                    console.log('Video loading started');
-                    setVideoLoading(true);
-                    setVideoError(false);
-                  }}
-                  onLoadedData={() => {
-                    console.log('Video data loaded');
-                    setVideoLoading(false);
-                  }}
-                  onCanPlay={() => {
-                    console.log('Video can play');
-                    setVideoLoading(false);
-                  }}
-                  onPlay={() => {
-                    console.log('Video started playing');
-                    setIsVideoPlaying(true);
-                    setVideoLoading(false);
-                  }}
-                  onPause={() => {
-                    console.log('Video paused');
-                    setIsVideoPlaying(false);
-                  }}
+                  onLoadStart={() => console.log('Video loading started')}
+                  onLoadedData={() => console.log('Video data loaded')}
+                  onCanPlay={() => console.log('Video can play')}
+                  onPlay={() => console.log('Video started playing')}
+                  onPause={() => console.log('Video paused')}
                   onEnded={() => {
                     console.log('Video ended');
-                    setIsVideoPlaying(false);
                     setShowVideoModal(false);
                   }}
                   onError={(e) => {
                     console.error('Video error:', e);
                     console.error('Video error details:', e.currentTarget.error);
                     setVideoError(true);
-                    setVideoLoading(false);
                   }}
                 >
                   <source src="/demo-video.mp4" type="video/mp4" />
