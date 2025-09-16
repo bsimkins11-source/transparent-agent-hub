@@ -45,12 +45,13 @@ export default function HomePage() {
   console.log('Current video source URL:', videoSources[currentVideoSource]);
   console.log('Audience Agent Demo video should be:', videoSources[0]);
 
-  // Handle video source changes
+  // Handle video loading when modal opens
   useEffect(() => {
     if (videoRef.current && showVideoModal) {
+      console.log('Modal opened, loading video...');
       videoRef.current.load();
     }
-  }, [currentVideoSource, showVideoModal]);
+  }, [showVideoModal]);
 
   const showSlide = (index: number) => {
     setCurrentSlideIndex(index);
@@ -524,24 +525,45 @@ export default function HomePage() {
                   controls
                   autoPlay
                   playsInline
-                  preload="metadata"
+                  preload="auto"
                   poster="/audience-poster.jpg"
-                  src="/demo-video.mp4"
-                  onLoadStart={() => console.log('Video loading started')}
-                  onLoadedData={() => console.log('Video data loaded')}
-                  onCanPlay={() => console.log('Video can play')}
-                  onPlay={() => console.log('Video started playing')}
-                  onPause={() => console.log('Video paused')}
+                  onLoadStart={() => {
+                    console.log('Video loading started');
+                    setVideoLoading(true);
+                    setVideoError(false);
+                  }}
+                  onLoadedData={() => {
+                    console.log('Video data loaded');
+                    setVideoLoading(false);
+                  }}
+                  onCanPlay={() => {
+                    console.log('Video can play');
+                    setVideoLoading(false);
+                  }}
+                  onPlay={() => {
+                    console.log('Video started playing');
+                    setIsVideoPlaying(true);
+                    setVideoLoading(false);
+                  }}
+                  onPause={() => {
+                    console.log('Video paused');
+                    setIsVideoPlaying(false);
+                  }}
                   onEnded={() => {
                     console.log('Video ended');
+                    setIsVideoPlaying(false);
                     setShowVideoModal(false);
                   }}
                   onError={(e) => {
                     console.error('Video error:', e);
                     console.error('Video error details:', e.currentTarget.error);
+                    console.error('Video src:', e.currentTarget.src);
                     setVideoError(true);
+                    setVideoLoading(false);
                   }}
                 >
+                  <source src="/demo-video.mp4" type="video/mp4" />
+                  <source src="/test-video.mp4" type="video/mp4" />
                   <p>Your browser does not support the video tag.</p>
                 </video>
                 
