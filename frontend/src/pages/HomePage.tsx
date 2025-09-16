@@ -519,78 +519,20 @@ export default function HomePage() {
               </div>
             ) : (
               <div className="relative">
-                <video 
-                  ref={videoRef}
-                  className="w-full h-auto max-h-[80vh]"
-                  controls
-                  playsInline
-                  preload="metadata"
-                  poster="/audience-poster.jpg"
-                  onLoadStart={() => {
-                    console.log('Video loading started');
-                    setVideoLoading(true);
-                    setVideoError(false);
-                  }}
-                  onLoadedData={() => {
-                    console.log('Video data loaded');
-                    setVideoLoading(false);
-                  }}
-                  onCanPlay={() => {
-                    console.log('Video can play');
-                    setVideoLoading(false);
-                  }}
-                  onPlay={() => {
-                    console.log('Video started playing');
-                    setIsVideoPlaying(true);
-                    setVideoLoading(false);
-                  }}
-                  onPause={() => {
-                    console.log('Video paused');
-                    setIsVideoPlaying(false);
-                  }}
-                  onEnded={() => {
-                    console.log('Video ended');
-                    setIsVideoPlaying(false);
-                    setShowVideoModal(false);
-                  }}
-                  onError={(e) => {
-                    console.error('Video error:', e);
-                    console.error('Video error details:', e.currentTarget.error);
-                    console.error('Video src:', e.currentTarget.src);
-                    setVideoError(true);
-                    setVideoLoading(false);
-                  }}
-                >
-                  <source src="/demo-video.mp4" type="video/mp4" />
-                  <source src="/test-video.mp4" type="video/mp4" />
-                  <p>Your browser does not support the video tag.</p>
-                </video>
-                
-                {/* Loading indicator */}
-                {videoLoading && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="text-white text-center">
-                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-                      <p>Loading video...</p>
-                    </div>
-                  </div>
-                )}
-                
-                {/* Manual play button overlay */}
-                {!videoLoading && !isVideoPlaying && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20">
-                    <button
-                      onClick={() => {
-                        if (videoRef.current) {
-                          videoRef.current.play();
-                        }
-                      }}
-                      className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-8 py-4 rounded-lg font-medium transition-all transform hover:scale-105"
-                    >
-                      ▶️ Play Video
-                    </button>
-                  </div>
-                )}
+                <div className="text-center text-white p-8">
+                  <h3 className="text-2xl font-bold mb-4">Audience Agent Demo</h3>
+                  <p className="mb-6">Click the button below to watch the demo video</p>
+                  <a 
+                    href="/demo-video.mp4" 
+                    target="_blank" 
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-medium transition-all transform hover:scale-105 inline-block"
+                  >
+                    ▶️ Watch Demo Video
+                  </a>
+                  <p className="mt-4 text-sm text-gray-300">
+                    Video will open in a new tab for best viewing experience
+                  </p>
+                </div>
               </div>
             )}
             
