@@ -12,3 +12,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <App />
   </React.StrictMode>,
 )
+// Force Vercel deployment Tue Sep 16 18:14:20 EDT 2025
