@@ -29,6 +29,7 @@ export default function HomePage() {
   const [searchParams] = useSearchParams();
   const isAuthRedirect = searchParams.get('auth_required') === 'true';
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [showVideoModal, setShowVideoModal] = useState(false);
 
   const showSlide = (index: number) => {
     setCurrentSlideIndex(index);
@@ -148,18 +149,7 @@ export default function HomePage() {
                             {/* Play button overlay */}
                             <div 
                               className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 hover:bg-opacity-30 transition-all cursor-pointer group"
-                              onClick={() => {
-                                // Try local video first, fallback to external
-                                const videoUrl = '/demo-video.mp4';
-                                const newWindow = window.open(videoUrl, '_blank');
-                                
-                                // If video fails to load, show fallback
-                                setTimeout(() => {
-                                  if (newWindow && newWindow.closed) {
-                                    alert('Video not available. Please try the test page: /test-video-access.html');
-                                  }
-                                }, 2000);
-                              }}
+                              onClick={() => setShowVideoModal(true)}
                             >
                               <div className="text-center text-white">
                                 <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-opacity-30 transition-all">
@@ -451,6 +441,45 @@ export default function HomePage() {
         </section>
       </div>
 
+      {/* Video Modal - Shadow Box */}
+      {showVideoModal && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-4 backdrop-blur-sm"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowVideoModal(false);
+            }
+          }}
+        >
+          <div className="relative w-full max-w-5xl bg-black rounded-2xl overflow-hidden shadow-2xl">
+            <div className="text-center text-white p-8">
+              <h3 className="text-3xl font-bold mb-6">Audience Agent Demo</h3>
+              <video 
+                className="w-full h-auto max-h-[70vh]"
+                controls
+                autoPlay
+                playsInline
+                poster="/audience-poster.jpg"
+              >
+                <source src="/demo-video.mp4" type="video/mp4" />
+                <source src="/test-video.mp4" type="video/mp4" />
+                <p>Your browser does not support the video tag.</p>
+              </video>
+              <p className="mt-4 text-gray-300">
+                If video doesn't load, try: <a href="/demo-video.mp4" target="_blank" className="text-blue-400 underline">Direct Link</a>
+              </p>
+            </div>
+            
+            {/* Close button */}
+            <button
+              className="absolute top-4 right-4 bg-black bg-opacity-70 hover:bg-opacity-90 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-medium transition-all z-10 transform hover:scale-110"
+              onClick={() => setShowVideoModal(false)}
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </>
   )
 }
