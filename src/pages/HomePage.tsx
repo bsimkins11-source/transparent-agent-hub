@@ -30,6 +30,7 @@ export default function HomePage() {
   const isAuthRedirect = searchParams.get('auth_required') === 'true';
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [showVideoModal, setShowVideoModal] = useState(false);
+  const [videoError, setVideoError] = useState(false);
 
   const showSlide = (index: number) => {
     setCurrentSlideIndex(index);
@@ -461,19 +462,43 @@ export default function HomePage() {
                 muted
                 playsInline
                 poster="/audience-poster.jpg"
+                onLoadStart={() => console.log('Video loading started')}
+                onCanPlay={() => console.log('Video can play')}
+                onPlay={() => console.log('Video playing')}
+                onError={(e) => {
+                  console.error('Video error:', e);
+                  console.error('Video error details:', e.currentTarget.error);
+                  setVideoError(true);
+                }}
                 ref={(video) => {
                   if (video) {
-                    video.play().catch(console.log);
+                    video.play().catch((error) => {
+                      console.log('Autoplay failed:', error);
+                      // Try to play without autoplay
+                      video.load();
+                    });
                   }
                 }}
               >
                 <source src="/demo-video.mp4" type="video/mp4" />
                 <source src="/test-video.mp4" type="video/mp4" />
-                <p>Your browser does not support the video tag.</p>
+                <source src="/TP_Audience_Agent_Demo_925.mp4" type="video/mp4" />
+                <p>Your browser does not support the video tag or the video failed to load.</p>
               </video>
-              <p className="mt-4 text-gray-300">
-                If video doesn't load, try: <a href="/demo-video.mp4" target="_blank" className="text-blue-400 underline">Direct Link</a>
-              </p>
+              {videoError ? (
+                <div className="mt-4 p-4 bg-red-900 bg-opacity-50 rounded-lg">
+                  <p className="text-red-300 mb-2">Video failed to load. Try these alternatives:</p>
+                  <div className="space-y-2">
+                    <a href="/demo-video.mp4" target="_blank" className="block text-blue-400 underline">Small Demo Video (332KB)</a>
+                    <a href="/test-video.mp4" target="_blank" className="block text-blue-400 underline">Test Video (191KB)</a>
+                    <a href="/TP_Audience_Agent_Demo_925.mp4" target="_blank" className="block text-blue-400 underline">Full Demo Video (52MB)</a>
+                  </div>
+                </div>
+              ) : (
+                <p className="mt-4 text-gray-300">
+                  If video doesn't load, try: <a href="/demo-video.mp4" target="_blank" className="text-blue-400 underline">Direct Link</a>
+                </p>
+              )}
             </div>
             
             {/* Close button */}
