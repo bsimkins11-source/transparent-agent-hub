@@ -130,20 +130,41 @@ export default function HomePage() {
                         <div className="bg-white/90 rounded-2xl p-6 shadow-xl border border-blue-200 w-full h-full flex flex-col justify-center">
                           <div className="relative w-full h-full rounded-xl overflow-hidden shadow-lg bg-gradient-to-br from-blue-50 to-indigo-100">
                             <video 
+                              ref={(video) => {
+                                if (video) {
+                                  video.addEventListener('loadeddata', () => console.log('Video loaded'));
+                                  video.addEventListener('error', (e) => console.error('Video error event:', e));
+                                }
+                              }}
                               className="w-full h-full object-cover"
                               controls
-                              preload="none"
+                              preload="metadata"
                               poster="/transparent-partners-logo.png"
                               playsInline
                               webkit-playsinline="true"
-                              onError={(e) => console.error('Video error:', e)}
+                              muted
+                              onError={(e) => {
+                                console.error('Video error:', e);
+                                console.error('Video error details:', e.currentTarget.error);
+                              }}
                               onLoadStart={() => console.log('Video loading started')}
+                              onLoadedData={() => console.log('Video data loaded')}
                               onCanPlay={() => console.log('Video can play')}
-                              onPlay={() => setIsVideoPlaying(true)}
-                              onPause={() => setIsVideoPlaying(false)}
-                              onEnded={() => setIsVideoPlaying(false)}
+                              onPlay={() => {
+                                console.log('Video started playing');
+                                setIsVideoPlaying(true);
+                              }}
+                              onPause={() => {
+                                console.log('Video paused');
+                                setIsVideoPlaying(false);
+                              }}
+                              onEnded={() => {
+                                console.log('Video ended');
+                                setIsVideoPlaying(false);
+                              }}
                             >
                               <source src="/TP_Audience_Agent_Demo_925.mp4" type="video/mp4" />
+                              <source src="/TP_Audience_Agent_Demo_925.mp4" type="video/mp4; codecs=avc1.42E01E" />
                               Your browser does not support the video tag.
                             </video>
                             {!isVideoPlaying && (
@@ -151,13 +172,30 @@ export default function HomePage() {
                                 className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 cursor-pointer hover:bg-opacity-30 transition-all"
                                 onClick={async (e) => {
                                   e.preventDefault();
+                                  console.log('Play button clicked!');
                                   const video = e.currentTarget.parentElement?.querySelector('video') as HTMLVideoElement;
+                                  console.log('Video element found:', video);
                                   if (video) {
                                     try {
+                                      console.log('Attempting to play video...');
+                                      video.muted = false; // Unmute for user interaction
                                       await video.play();
+                                      console.log('Video playing successfully!');
                                       setIsVideoPlaying(true);
                                     } catch (error) {
                                       console.error('Error playing video:', error);
+                                      // Try with muted first, then unmute
+                                      try {
+                                        video.muted = true;
+                                        await video.play();
+                                        video.muted = false;
+                                        console.log('Video playing muted, then unmuted');
+                                        setIsVideoPlaying(true);
+                                      } catch (secondError) {
+                                        console.error('Second attempt failed:', secondError);
+                                        // Show error message
+                                        alert('Unable to play video. Please check your browser settings or try refreshing the page.');
+                                      }
                                     }
                                   }
                                 }}
