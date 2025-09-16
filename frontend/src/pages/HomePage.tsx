@@ -1,14 +1,10 @@
-import React, { useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { 
-  MagnifyingGlassIcon,
-  SparklesIcon,
   ShieldCheckIcon,
   RocketLaunchIcon,
   UserGroupIcon,
-  GlobeAltIcon,
-  ChartBarIcon,
-  CogIcon
+  ChartBarIcon
 } from '@heroicons/react/24/outline'
 
 // Add carousel styles
@@ -36,6 +32,7 @@ export default function HomePage() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [videoLoading, setVideoLoading] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const showSlide = (index: number) => {
@@ -129,20 +126,35 @@ export default function HomePage() {
                       <div className="col-span-2 flex items-center justify-center">
                         <div className="bg-white/90 rounded-2xl p-6 shadow-xl border border-blue-200 w-full h-full flex flex-col justify-center">
                           <div className="relative w-full h-full rounded-xl overflow-hidden shadow-lg bg-gradient-to-br from-blue-50 to-indigo-100">
-                            {/* Freeze frame from video */}
+                            {/* Screen grab from video */}
                             <img 
                               src="/video-poster.jpg"
                               alt="Audience Agent Demo"
                               className="w-full h-full object-cover"
+                              onLoad={() => console.log('Poster image loaded successfully')}
+                              onError={(e) => {
+                                console.error('Poster image failed to load:', e);
+                                // Fallback to a gradient background if poster fails
+                                e.currentTarget.style.display = 'none';
+                              }}
                             />
+                            
+                            {/* Fallback gradient background when image fails */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                              <div className="text-center text-white">
+                                <div className="text-6xl mb-4">🎯</div>
+                                <h3 className="text-2xl font-bold mb-2">Audience Agent Demo</h3>
+                                <p className="text-blue-100">Click to watch the demo</p>
+                              </div>
+                            </div>
                             
                             {/* Play button overlay */}
                             <div 
                               className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 hover:bg-opacity-30 transition-all cursor-pointer group"
                               onClick={() => {
-                                // Try opening video in new tab first to test
-                                window.open('/test-video.mp4', '_blank');
-                                // Also open modal
+                                console.log('Video play button clicked');
+                                setVideoLoading(true);
+                                setVideoError(false);
                                 setShowVideoModal(true);
                               }}
                             >
@@ -436,76 +448,132 @@ export default function HomePage() {
         </section>
       </div>
 
-      {/* Video Modal */}
+      {/* Video Modal - Shadow Box */}
       {showVideoModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-          <div className="relative w-full max-w-4xl bg-black rounded-lg overflow-hidden">
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-4 backdrop-blur-sm"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setShowVideoModal(false);
+                setIsVideoPlaying(false);
+                setVideoError(false);
+                setVideoLoading(false);
+                if (videoRef.current) {
+                  videoRef.current.pause();
+                }
+              }
+            }}
+        >
+          <div className="relative w-full max-w-5xl bg-black rounded-2xl overflow-hidden shadow-2xl">
             {videoError ? (
-              <div className="p-8 text-center text-white">
-                <div className="text-6xl mb-4">🎥</div>
-                <h3 className="text-2xl font-bold mb-4">Video Not Available</h3>
-                <p className="text-gray-300 mb-6">The video demo is currently unavailable. Please try again later.</p>
-                <button
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-all"
-                  onClick={() => {
-                    setShowVideoModal(false);
-                    setVideoError(false);
-                  }}
-                >
-                  Close
-                </button>
+              <div className="p-12 text-center text-white">
+                <div className="text-8xl mb-6">🎥</div>
+                <h3 className="text-3xl font-bold mb-6">Video Not Available</h3>
+                <p className="text-gray-300 mb-8 text-lg">The video demo is currently unavailable. Please try again later.</p>
+                <div className="space-x-4">
+                  <button
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-all transform hover:scale-105"
+                    onClick={() => {
+                      setShowVideoModal(false);
+                      setVideoError(false);
+                      setVideoLoading(false);
+                    }}
+                  >
+                    Close
+                  </button>
+                  <button
+                    className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 rounded-lg font-medium transition-all transform hover:scale-105"
+                    onClick={() => {
+                      setVideoError(false);
+                      setVideoLoading(true);
+                      // Try to reload the video
+                      if (videoRef.current) {
+                        videoRef.current.load();
+                      }
+                    }}
+                  >
+                    Retry
+                  </button>
+                </div>
               </div>
             ) : (
-              <video 
-                ref={videoRef}
-                className="w-full h-auto"
-                controls
-                autoPlay
-                playsInline
-                webkit-playsinline="true"
-                onLoadStart={() => console.log('Video loading started')}
-                onLoadedData={() => console.log('Video data loaded')}
-                onCanPlay={() => console.log('Video can play')}
-                onPlay={() => {
-                  console.log('Video started playing');
-                  setIsVideoPlaying(true);
-                }}
-                onPause={() => {
-                  console.log('Video paused');
-                  setIsVideoPlaying(false);
-                }}
-                onEnded={() => {
-                  console.log('Video ended');
-                  setIsVideoPlaying(false);
-                  setShowVideoModal(false);
-                }}
-                onError={(e) => {
-                  console.error('Video error:', e);
-                  console.error('Video error details:', e.currentTarget.error);
-                  setVideoError(true);
-                }}
-              >
-                <source src="/test-video.mp4" type="video/mp4" />
-                <source src="/demo-video.mp4" type="video/mp4" />
-                <source src="/TMDQA.mp4" type="video/mp4" />
-                <source src="/TMDQE.mov" type="video/quicktime" />
-                <p className="text-white p-4">Your browser does not support the video tag. <a href="/test-video.mp4" className="text-blue-400 underline">Download the video</a></p>
-              </video>
+              <div className="relative">
+                <video 
+                  ref={videoRef}
+                  className="w-full h-auto max-h-[80vh]"
+                  controls
+                  autoPlay
+                  playsInline
+                  preload="metadata"
+                  poster="/video-poster.jpg"
+                  onLoadStart={() => {
+                    console.log('Video loading started');
+                    setVideoLoading(true);
+                  }}
+                  onLoadedData={() => {
+                    console.log('Video data loaded');
+                    setVideoLoading(false);
+                  }}
+                  onCanPlay={() => {
+                    console.log('Video can play');
+                    setVideoLoading(false);
+                  }}
+                  onPlay={() => {
+                    console.log('Video started playing');
+                    setIsVideoPlaying(true);
+                    setVideoLoading(false);
+                  }}
+                  onPause={() => {
+                    console.log('Video paused');
+                    setIsVideoPlaying(false);
+                  }}
+                  onEnded={() => {
+                    console.log('Video ended');
+                    setIsVideoPlaying(false);
+                    setShowVideoModal(false);
+                  }}
+                  onError={(e) => {
+                    console.error('Video error:', e);
+                    console.error('Video error details:', e.currentTarget.error);
+                    setVideoError(true);
+                    setVideoLoading(false);
+                  }}
+                >
+                  <source src="/TP_Audience_Agent_Demo_925.mp4" type="video/mp4" />
+                  <source src="/demo-video.mp4" type="video/mp4" />
+                  <source src="/test-video.mp4" type="video/mp4" />
+                  <source src="/TMDQA.mp4" type="video/mp4" />
+                  <source src="/TMDQE.mov" type="video/quicktime" />
+                  <p className="text-white p-4">Your browser does not support the video tag. <a href="/TP_Audience_Agent_Demo_925.mp4" className="text-blue-400 underline">Download the video</a></p>
+                </video>
+                
+                {/* Loading indicator */}
+                {videoLoading && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="text-white text-center">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+                      <p>Loading video...</p>
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
             
             {/* Close button */}
             <button
-              className="absolute top-4 right-4 bg-black bg-opacity-70 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition-all z-10"
+              className="absolute top-4 right-4 bg-black bg-opacity-70 hover:bg-opacity-90 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-medium transition-all z-10 transform hover:scale-110"
               onClick={() => {
                 setShowVideoModal(false);
                 setIsVideoPlaying(false);
                 setVideoError(false);
+                setVideoLoading(false);
                 if (videoRef.current) {
                   videoRef.current.pause();
                 }
               }}
+              aria-label="Close video"
             >
-              ✕ Close
+              ✕
             </button>
           </div>
         </div>
