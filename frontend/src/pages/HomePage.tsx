@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { 
   MagnifyingGlassIcon,
@@ -34,31 +34,6 @@ export default function HomePage() {
   const isAuthRedirect = searchParams.get('auth_required') === 'true';
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-
-  // Preload video on component mount
-  useEffect(() => {
-    const preloadVideo = () => {
-      const video = document.createElement('video');
-      video.preload = 'metadata';
-      video.src = '/TP_Audience_Agent_Demo_925.mp4';
-      video.muted = true;
-      
-      video.addEventListener('loadeddata', () => {
-        console.log('Video preloaded successfully');
-        setIsVideoLoaded(true);
-      });
-      
-      video.addEventListener('error', (e) => {
-        console.error('Video preload error:', e);
-      });
-      
-      // Start loading
-      video.load();
-    };
-
-    preloadVideo();
-  }, []);
 
   const showSlide = (index: number) => {
     setCurrentSlideIndex(index);
@@ -152,95 +127,39 @@ export default function HomePage() {
                         <div className="bg-white/90 rounded-2xl p-6 shadow-xl border border-blue-200 w-full h-full flex flex-col justify-center">
                           <div className="relative w-full h-full rounded-xl overflow-hidden shadow-lg bg-gradient-to-br from-blue-50 to-indigo-100">
                             <video 
-                              ref={(video) => {
-                                if (video) {
-                                  video.addEventListener('loadeddata', () => console.log('Video loaded'));
-                                  video.addEventListener('error', (e) => console.error('Video error event:', e));
-                                }
-                              }}
                               className="w-full h-full object-cover"
                               controls
-                              preload="auto"
+                              preload="metadata"
                               poster="/transparent-partners-logo.png"
                               playsInline
-                              webkit-playsinline="true"
-                              muted
-                              onError={(e) => {
-                                console.error('Video error:', e);
-                                console.error('Video error details:', e.currentTarget.error);
-                              }}
-                              onLoadStart={() => console.log('Video loading started')}
-                              onLoadedData={() => console.log('Video data loaded')}
-                              onCanPlay={() => console.log('Video can play')}
-                              onPlay={() => {
-                                console.log('Video started playing');
-                                setIsVideoPlaying(true);
-                              }}
-                              onPause={() => {
-                                console.log('Video paused');
-                                setIsVideoPlaying(false);
-                              }}
-                              onEnded={() => {
-                                console.log('Video ended');
-                                setIsVideoPlaying(false);
-                              }}
+                              onPlay={() => setIsVideoPlaying(true)}
+                              onPause={() => setIsVideoPlaying(false)}
+                              onEnded={() => setIsVideoPlaying(false)}
                             >
                               <source src="/TP_Audience_Agent_Demo_925.mp4" type="video/mp4" />
-                              <source src="/TP_Audience_Agent_Demo_925.mp4" type="video/mp4; codecs=avc1.42E01E" />
                               Your browser does not support the video tag.
                             </video>
                             {!isVideoPlaying && (
                               <div 
                                 className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 cursor-pointer hover:bg-opacity-30 transition-all"
-                                onClick={async (e) => {
+                                onClick={(e) => {
                                   e.preventDefault();
-                                  if (!isVideoLoaded) {
-                                    console.log('Video not loaded yet, ignoring click');
-                                    return;
-                                  }
-                                  console.log('Play button clicked!');
                                   const video = e.currentTarget.parentElement?.querySelector('video') as HTMLVideoElement;
-                                  console.log('Video element found:', video);
                                   if (video) {
-                                    try {
-                                      console.log('Attempting to play video...');
-                                      video.muted = false; // Unmute for user interaction
-                                      await video.play();
-                                      console.log('Video playing successfully!');
-                                      setIsVideoPlaying(true);
-                                    } catch (error) {
-                                      console.error('Error playing video:', error);
-                                      // Try with muted first, then unmute
-                                      try {
-                                        video.muted = true;
-                                        await video.play();
-                                        video.muted = false;
-                                        console.log('Video playing muted, then unmuted');
-                                        setIsVideoPlaying(true);
-                                      } catch (secondError) {
-                                        console.error('Second attempt failed:', secondError);
-                                        // Show error message
-                                        alert('Unable to play video. Please check your browser settings or try refreshing the page.');
-                                      }
-                                    }
+                                    video.play();
+                                    setIsVideoPlaying(true);
                                   }
                                 }}
                               >
-                              <div className="text-center text-white">
-                                <div className="text-6xl mb-4">🎯</div>
-                                <h3 className="text-2xl font-bold mb-2">Audience Agent Demo</h3>
-                                <p className="text-lg mb-4">
-                                  {isVideoLoaded ? 'Click play to watch the demo' : 'Loading video...'}
-                                </p>
-                                <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto hover:bg-opacity-30 transition-all">
-                                  {isVideoLoaded ? (
+                                <div className="text-center text-white">
+                                  <div className="text-6xl mb-4">🎯</div>
+                                  <h3 className="text-2xl font-bold mb-2">Audience Agent Demo</h3>
+                                  <p className="text-lg mb-4">Click play to watch the demo</p>
+                                  <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto hover:bg-opacity-30 transition-all">
                                     <div className="w-0 h-0 border-l-[12px] border-l-white border-y-[8px] border-y-transparent ml-1"></div>
-                                  ) : (
-                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-                                  )}
+                                  </div>
                                 </div>
                               </div>
-                            </div>
                             )}
                           </div>
                         </div>
