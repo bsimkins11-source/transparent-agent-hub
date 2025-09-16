@@ -1,6 +1,6 @@
 # 🚀 Deployment Guide - Transparent Agent Hub
 
-This guide will help you set up automated deployment from GitHub to GCP using GitHub Actions.
+This guide covers the automated deployment process using GitHub Actions to deploy to GCP Cloud Run.
 
 ## 📋 Prerequisites
 
