@@ -139,7 +139,12 @@ export default function HomePage() {
                             {/* Play button overlay */}
                             <div 
                               className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 hover:bg-opacity-30 transition-all cursor-pointer group"
-                              onClick={() => setShowVideoModal(true)}
+                              onClick={() => {
+                                // Try opening video in new tab first to test
+                                window.open('/test-video.mp4', '_blank');
+                                // Also open modal
+                                setShowVideoModal(true);
+                              }}
                             >
                               <div className="text-center text-white">
                                 <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-opacity-30 transition-all">
