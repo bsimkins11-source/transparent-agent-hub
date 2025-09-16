@@ -35,6 +35,13 @@ export default function SimpleVideoModal() {
               className="w-full h-auto"
               controls
               preload="metadata"
+              onLoadStart={() => console.log('Video loading started')}
+              onCanPlay={() => console.log('Video can play')}
+              onPlay={() => console.log('Video playing')}
+              onError={(e) => {
+                console.error('Video error:', e);
+                console.error('Video error details:', e.currentTarget.error);
+              }}
             >
               <source src="/demo-video.mp4" type="video/mp4" />
               <source src="/test-video.mp4" type="video/mp4" />
