@@ -800,7 +800,7 @@ export default function HierarchicalAgentLibrary({
             <nav className="flex mb-4" aria-label="Breadcrumb">
               <ol className="flex items-center space-x-2">
                 <li className="flex items-center">
-                  <span className="text-sm font-medium text-gray-900">Global Library</span>
+                  <span className="text-sm font-medium text-gray-900">Global Marketplace</span>
                 </li>
               </ol>
             </nav>
@@ -1079,7 +1079,7 @@ export default function HierarchicalAgentLibrary({
                 }`}
               >
                 <span>🌐</span>
-                <span>Global Library</span>
+                <span>Global Marketplace</span>
               </button>
 
               {/* Company Tab - NEW STRUCTURE */}

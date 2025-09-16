@@ -19,13 +19,13 @@ This guide provides step-by-step instructions for manually testing the add/remov
 **Steps**:
 1. Open http://localhost:3000 in your browser
 2. Sign in with a test user account
-3. Navigate to the Global Library tab
+3. Navigate to the Global Marketplace tab
 4. Find the "Gemini Chat Agent" (should be marked as free tier)
 5. Click the "Add to Library" button
 6. Verify success toast message appears
 7. Navigate to Personal Library tab
 8. Verify the agent appears in the personal library
-9. Verify the agent shows "In My Library" status in Global Library
+9. Verify the agent shows "In My Library" status in Global Marketplace
 
 **Expected Results**:
 - ✅ Add button changes to "In My Library" status
@@ -43,14 +43,14 @@ This guide provides step-by-step instructions for manually testing the add/remov
 4. Confirm removal
 5. Verify success toast message appears
 6. Verify agent disappears from Personal Library
-7. Navigate back to Global Library
+7. Navigate back to Global Marketplace
 8. Verify "Add to Library" button reappears
 
 **Expected Results**:
 - ✅ Remove button works correctly
 - ✅ Success toast appears
 - ✅ Agent disappears from Personal Library
-- ✅ Add button reappears in Global Library
+- ✅ Add button reappears in Global Marketplace
 
 ### 2. Premium Agent Handling
 
@@ -58,7 +58,7 @@ This guide provides step-by-step instructions for manually testing the add/remov
 **Objective**: Verify that premium agents require approval and cannot be added directly
 
 **Steps**:
-1. In Global Library, find a premium agent (e.g., "Google Imagen Agent")
+1. In Global Marketplace, find a premium agent (e.g., "Google Imagen Agent")
 2. Verify the button shows "Request Access" instead of "Add to Library"
 3. Click "Request Access" button
 4. Verify appropriate message about premium access requirements

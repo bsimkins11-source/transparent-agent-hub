@@ -76,7 +76,7 @@ export default function LibrarySidebar({
   // Add company or network library based on user's organization
   if (userProfile?.organizationId) {
     libraryItems.push({
-      name: 'Company Library',
+      name: `${userProfile.organizationName || 'Company'} Library`,
       href: `/company/${companySlug || userProfile.organizationId}/agents`,
       icon: BuildingOfficeIcon,
       current: currentLibrary === 'company',
@@ -94,7 +94,7 @@ export default function LibrarySidebar({
 
   // Add global library
   libraryItems.push({
-    name: 'Global Library',
+    name: 'Global Marketplace',
     href: '/agents',
     icon: GlobeAltIcon,
     current: currentLibrary === 'global',
@@ -238,8 +238,8 @@ export default function LibrarySidebar({
               <div className="text-sm text-gray-500 mb-2">Currently viewing:</div>
               <div className="text-sm font-medium text-gray-900">
                 {currentLibrary === 'personal' && 'My Library'}
-                {currentLibrary === 'global' && 'Global Library'}
-                {currentLibrary === 'company' && 'Company Library'}
+                {currentLibrary === 'global' && 'Global Marketplace'}
+                {currentLibrary === 'company' && `${userProfile?.organizationName || 'Company'} Library`}
                 {currentLibrary === 'network' && 'Network Library'}
               </div>
             </div>

@@ -73,7 +73,7 @@ export default function Sidebar() {
   // Base navigation items that are always available
   const baseNavigationItems = [
     {
-      name: 'Global Library',
+      name: 'Global Marketplace',
       href: '/agents',
       icon: GlobeAltIcon,
       current: location.pathname === '/agents',

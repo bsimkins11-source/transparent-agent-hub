@@ -1294,7 +1294,7 @@ export default function SuperAdminDashboard() {
               <div className="flex items-center space-x-3 mb-3">
                 <img src="/transparent-partners-logo.png" alt="Transparent Partners" className="w-10 h-10 rounded-lg" />
                 <div>
-                  <h3 className="font-bold text-purple-900 text-lg">Global Library</h3>
+                  <h3 className="font-bold text-purple-900 text-lg">Global Marketplace</h3>
                   <p className="text-sm text-purple-600">All Available Agents</p>
                 </div>
               </div>
@@ -1723,7 +1723,7 @@ export default function SuperAdminDashboard() {
                   <img src="/transparent-partners-logo.png" alt="Transparent Partners" className="w-8 h-8 rounded-lg" />
                   <div>
                     <h4 className="font-medium text-purple-900">Transparent Partners</h4>
-                    <p className="text-sm text-purple-600">Global Agent Library</p>
+                    <p className="text-sm text-purple-600">Global Agent Marketplace</p>
                   </div>
                 </div>
                 <p className="text-sm text-purple-700">Access the main Transparent Partners agent library with all available agents</p>

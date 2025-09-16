@@ -41,8 +41,8 @@ export const getLibraryAgents = async (
     
     switch (libraryType) {
       case 'global':
-        // Global library shows all agents - the master catalog (both public and private)
-        console.log('🌍 Loading global library agents');
+        // Global marketplace shows all agents - the master catalog (both public and private)
+        console.log('🌍 Loading global marketplace agents');
         try {
           // REMOVED FIREBASE - load from local data only
           console.log('📡 Loading agents from local data...');
@@ -287,7 +287,7 @@ const getAgentContext = async (
   const isFreeAgent = agentTier === 'free';
   const isPremiumAgent = agentTier === 'premium' || agentTier === 'enterprise';
   
-  // Global Library: All agents are available
+  // Global Marketplace: All agents are available
   if (currentLibrary === 'global') {
     context.availableIn = ['global'];
     
@@ -297,14 +297,14 @@ const getAgentContext = async (
       context.canAdd = true;
       context.canRequest = false;
       context.assignmentType = 'direct';
-      console.log(`✅ ${agent.name} is free agent - directly addable in global library`);
+      console.log(`✅ ${agent.name} is free agent - directly addable in global marketplace`);
     } else if (isPremiumAgent) {
       // Premium agents require approval
       context.accessLevel = 'request';
       context.canAdd = false;
       context.canRequest = true;
       context.assignmentType = 'approval';
-      console.log(`⚠️ ${agent.name} is premium agent - requires approval in global library`);
+      console.log(`⚠️ ${agent.name} is premium agent - requires approval in global marketplace`);
     }
     
     context.grantedBy = 'super_admin';
@@ -644,10 +644,10 @@ export const getLibraryInfo = (
   switch (libraryType) {
     case 'global':
       return {
-        name: 'Global Agent Library',
+        name: 'Global Agent Marketplace',
         description: 'All available agents in the system - the master catalog',
         icon: '🌐',
-        breadcrumb: ['Global Library']
+        breadcrumb: ['Global Marketplace']
       };
       
     case 'company':

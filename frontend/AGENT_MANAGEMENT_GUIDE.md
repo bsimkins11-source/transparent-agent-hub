@@ -6,7 +6,7 @@ The Transparent AI Agent Hub allows you to manage your personal collection of AI
 ## How to Add Agents to Your Library
 
 ### Free Agents (Like Gemini)
-1. **Navigate to the Global Library** - This shows all available agents
+1. **Navigate to the Global Marketplace** - This shows all available agents
 2. **Find the Gemini Chat Agent** - Look for "Gemini Chat Agent" in the list
 3. **Click "Add to Library"** - The button should be visible if the agent is free
 4. **Agent Added Successfully** - The button will change to "Remove"
@@ -27,7 +27,7 @@ The Transparent AI Agent Hub allows you to manage your personal collection of AI
 
 ## How to Re-add Agents
 
-1. **Go to "Global Library"** - Navigate back to see all available agents
+1. **Go to "Global Marketplace"** - Navigate back to see all available agents
 2. **Find the Agent** - Locate the agent you previously removed
 3. **Click "Add to Library"** - The button should be available again
 4. **Agent Re-added** - The agent is back in your library
@@ -70,7 +70,7 @@ The debug panel (accessible via the "Debug" button) will:
 
 ## Library Types
 
-### Global Library
+### Global Marketplace
 - **All Available Agents** - Shows every agent in the system
 - **Public Access** - Visible to all authenticated users
 - **Add/Request** - Primary place to discover new agents
@@ -125,7 +125,7 @@ To verify everything is working:
 
 1. Go to http://localhost:3000
 2. Sign in to your account
-3. Navigate to "Global Library"
+3. Navigate to "Global Marketplace"
 4. Look for "Gemini Chat Agent"
 5. Click "Add to Library"
 6. Check "My Library" to confirm it was added

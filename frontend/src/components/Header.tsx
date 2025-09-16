@@ -186,7 +186,7 @@ export default function Header() {
                       onClick={closeAllDropdowns}
                     >
                       <GlobeAltIcon className="w-5 h-5" />
-                      <span>Global Library</span>
+                      <span>Global Marketplace</span>
                     </Link>
                     <Link
                       to="/company/transparent-partners"
