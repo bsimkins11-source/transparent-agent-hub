@@ -458,7 +458,6 @@ export default function HomePage() {
               <video 
                 className="w-full h-auto max-h-[70vh]"
                 controls
-                autoPlay
                 muted
                 playsInline
                 poster="/audience-poster.jpg"
@@ -469,15 +468,6 @@ export default function HomePage() {
                   console.error('Video error:', e);
                   console.error('Video error details:', e.currentTarget.error);
                   setVideoError(true);
-                }}
-                ref={(video) => {
-                  if (video) {
-                    video.play().catch((error) => {
-                      console.log('Autoplay failed:', error);
-                      // Try to play without autoplay
-                      video.load();
-                    });
-                  }
                 }}
               >
                 <source src="/demo-video.mp4" type="video/mp4" />
