@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { 
   ShieldCheckIcon,
@@ -33,7 +33,23 @@ export default function HomePage() {
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const [videoLoading, setVideoLoading] = useState(false);
+  const [currentVideoSource, setCurrentVideoSource] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const videoSources = [
+    '/TP_Audience_Agent_Demo_925.mp4',
+    '/demo-video.mp4', 
+    '/test-video.mp4',
+    '/TMDQA.mp4',
+    '/TMDQE.mov'
+  ];
+
+  // Handle video source changes
+  useEffect(() => {
+    if (videoRef.current && showVideoModal) {
+      videoRef.current.load();
+    }
+  }, [currentVideoSource, showVideoModal]);
 
   const showSlide = (index: number) => {
     setCurrentSlideIndex(index);
@@ -155,6 +171,7 @@ export default function HomePage() {
                                 console.log('Video play button clicked');
                                 setVideoLoading(true);
                                 setVideoError(false);
+                                setCurrentVideoSource(0); // Reset to first video source
                                 setShowVideoModal(true);
                               }}
                             >
@@ -506,9 +523,11 @@ export default function HomePage() {
                   playsInline
                   preload="metadata"
                   poster="/video-poster.jpg"
+                  src={videoSources[currentVideoSource]}
                   onLoadStart={() => {
                     console.log('Video loading started');
                     setVideoLoading(true);
+                    setVideoError(false);
                   }}
                   onLoadedData={() => {
                     console.log('Video data loaded');
@@ -535,16 +554,27 @@ export default function HomePage() {
                   onError={(e) => {
                     console.error('Video error:', e);
                     console.error('Video error details:', e.currentTarget.error);
+                    console.error('Video src attempted:', e.currentTarget.src);
+                    
+                    // Try next video source
+                    if (currentVideoSource < videoSources.length - 1) {
+                      console.log(`Trying next video source: ${currentVideoSource + 1}`);
+                      setCurrentVideoSource(currentVideoSource + 1);
+                      setVideoError(false);
+                      setVideoLoading(true);
+                    } else {
+                      console.log('All video sources failed');
+                      setVideoError(true);
+                      setVideoLoading(false);
+                    }
+                  }}
+                  onAbort={() => {
+                    console.log('Video loading aborted');
                     setVideoError(true);
                     setVideoLoading(false);
                   }}
                 >
-                  <source src="/TP_Audience_Agent_Demo_925.mp4" type="video/mp4" />
-                  <source src="/demo-video.mp4" type="video/mp4" />
-                  <source src="/test-video.mp4" type="video/mp4" />
-                  <source src="/TMDQA.mp4" type="video/mp4" />
-                  <source src="/TMDQE.mov" type="video/quicktime" />
-                  <p className="text-white p-4">Your browser does not support the video tag. <a href="/TP_Audience_Agent_Demo_925.mp4" className="text-blue-400 underline">Download the video</a></p>
+                  <p className="text-white p-4">Your browser does not support the video tag. <a href={videoSources[currentVideoSource]} className="text-blue-400 underline">Download the video</a></p>
                 </video>
                 
                 {/* Loading indicator */}
