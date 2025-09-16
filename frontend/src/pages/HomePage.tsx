@@ -34,6 +34,7 @@ export default function HomePage() {
   const isAuthRedirect = searchParams.get('auth_required') === 'true';
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [showVideoPlayer, setShowVideoPlayer] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const showSlide = (index: number) => {
@@ -127,34 +128,78 @@ export default function HomePage() {
                       <div className="col-span-2 flex items-center justify-center">
                         <div className="bg-white/90 rounded-2xl p-6 shadow-xl border border-blue-200 w-full h-full flex flex-col justify-center">
                           <div className="relative w-full h-full rounded-xl overflow-hidden shadow-lg bg-gradient-to-br from-blue-50 to-indigo-100">
-                            {/* Freeze frame from video */}
-                            <img 
-                              src="/video-poster.jpg"
-                              alt="Audience Agent Demo"
-                              className="w-full h-full object-cover"
-                            />
-                            
-                            {/* Play button overlay */}
-                            <div 
-                              className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 hover:bg-opacity-30 transition-all cursor-pointer group"
-                              onClick={() => {
-                                // Open video in new tab
-                                window.open('/TMDQA.mp4', '_blank');
-                              }}
-                            >
-                              <div className="text-center text-white">
-                                <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-opacity-30 transition-all">
-                                  <div className="w-0 h-0 border-l-[16px] border-l-white border-y-[12px] border-y-transparent ml-1"></div>
+                            {!showVideoPlayer ? (
+                              <>
+                                {/* Freeze frame from video */}
+                                <img 
+                                  src="/video-poster.jpg"
+                                  alt="Audience Agent Demo"
+                                  className="w-full h-full object-cover"
+                                />
+                                
+                                {/* Play button overlay */}
+                                <div 
+                                  className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 hover:bg-opacity-30 transition-all cursor-pointer group"
+                                  onClick={() => {
+                                    setShowVideoPlayer(true);
+                                    // Start playing video after a short delay to ensure it's loaded
+                                    setTimeout(() => {
+                                      if (videoRef.current) {
+                                        videoRef.current.play();
+                                      }
+                                    }, 100);
+                                  }}
+                                >
+                                  <div className="text-center text-white">
+                                    <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-opacity-30 transition-all">
+                                      <div className="w-0 h-0 border-l-[16px] border-l-white border-y-[12px] border-y-transparent ml-1"></div>
+                                    </div>
+                                    <h3 className="text-xl font-bold mb-2">Audience Agent Demo</h3>
+                                    <p className="text-sm opacity-90">Click to watch the demo</p>
+                                  </div>
                                 </div>
-                                <h3 className="text-xl font-bold mb-2">Audience Agent Demo</h3>
-                                <p className="text-sm opacity-90">Click to watch the demo</p>
-                              </div>
-                            </div>
-                            
-                            {/* Demo label */}
-                            <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-4 py-2 rounded-lg text-sm font-medium">
-                              🎯 Live Demo
-                            </div>
+                                
+                                {/* Demo label */}
+                                <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                                  🎯 Live Demo
+                                </div>
+                              </>
+                            ) : (
+                              <>
+                                {/* Video player */}
+                                <video 
+                                  ref={videoRef}
+                                  className="w-full h-full object-cover"
+                                  controls
+                                  preload="auto"
+                                  playsInline
+                                  webkit-playsinline="true"
+                                  onPlay={() => setIsVideoPlaying(true)}
+                                  onPause={() => setIsVideoPlaying(false)}
+                                  onEnded={() => {
+                                    setIsVideoPlaying(false);
+                                    setShowVideoPlayer(false);
+                                  }}
+                                >
+                                  <source src="/TMDQA.mp4" type="video/mp4" />
+                                  Your browser does not support the video tag.
+                                </video>
+                                
+                                {/* Close button */}
+                                <button
+                                  className="absolute top-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-lg text-sm font-medium hover:bg-opacity-90 transition-all"
+                                  onClick={() => {
+                                    setShowVideoPlayer(false);
+                                    setIsVideoPlaying(false);
+                                    if (videoRef.current) {
+                                      videoRef.current.pause();
+                                    }
+                                  }}
+                                >
+                                  ✕ Close
+                                </button>
+                              </>
+                            )}
                           </div>
                         </div>
                       </div>
