@@ -47,6 +47,7 @@ export default function HomePage() {
   console.log('Available video sources:', videoSources);
   console.log('Current video source index:', currentVideoSource);
   console.log('Current video source URL:', videoSources[currentVideoSource]);
+  console.log('Audience Agent Demo video should be:', videoSources[0]);
 
   // Handle video source changes
   useEffect(() => {
