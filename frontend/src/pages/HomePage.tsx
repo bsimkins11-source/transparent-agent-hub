@@ -44,6 +44,10 @@ export default function HomePage() {
     '/TMDQE.mov'
   ];
 
+  console.log('Available video sources:', videoSources);
+  console.log('Current video source index:', currentVideoSource);
+  console.log('Current video source URL:', videoSources[currentVideoSource]);
+
   // Handle video source changes
   useEffect(() => {
     if (videoRef.current && showVideoModal) {
@@ -150,13 +154,15 @@ export default function HomePage() {
                               onLoad={() => console.log('Poster image loaded successfully')}
                               onError={(e) => {
                                 console.error('Poster image failed to load:', e);
-                                // Fallback to a gradient background if poster fails
+                                // Show fallback content when image fails
                                 e.currentTarget.style.display = 'none';
+                                const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                                if (fallback) fallback.style.display = 'flex';
                               }}
                             />
                             
-                            {/* Fallback gradient background when image fails */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                            {/* Fallback gradient background when image fails - hidden by default */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center" style={{ display: 'none' }}>
                               <div className="text-center text-white">
                                 <div className="text-6xl mb-4">🎯</div>
                                 <h3 className="text-2xl font-bold mb-2">Audience Agent Demo</h3>
@@ -516,6 +522,7 @@ export default function HomePage() {
             ) : (
               <div className="relative">
                 <video 
+                  key={currentVideoSource}
                   ref={videoRef}
                   className="w-full h-auto max-h-[80vh]"
                   controls
