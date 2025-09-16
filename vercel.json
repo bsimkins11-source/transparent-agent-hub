@@ -4,7 +4,7 @@
   "framework": "vite",
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!.*\\.(mp4|mov|webm|jpg|jpeg|png|gif|svg|ico|css|js|json|html)).*)",
       "destination": "/index.html"
     }
   ]
