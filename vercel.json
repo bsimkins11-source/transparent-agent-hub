@@ -2,6 +2,11 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
+  "functions": {
+    "app/api/**/*.js": {
+      "maxDuration": 10
+    }
+  },
   "rewrites": [
     {
       "source": "/((?!.*\\.(mp4|mov|webm|jpg|jpeg|png|gif|svg|ico|css|js|json|html|txt)).*)",
