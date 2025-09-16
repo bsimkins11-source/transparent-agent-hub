@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { 
   ShieldCheckIcon,
@@ -29,29 +29,6 @@ export default function HomePage() {
   const [searchParams] = useSearchParams();
   const isAuthRedirect = searchParams.get('auth_required') === 'true';
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [showVideoModal, setShowVideoModal] = useState(false);
-  const [videoError, setVideoError] = useState(false);
-  const [videoLoading, setVideoLoading] = useState(false);
-  const [currentVideoSource, setCurrentVideoSource] = useState(0);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const videoSources = [
-    '/demo-video.mp4'
-  ];
-
-  console.log('Available video sources:', videoSources);
-  console.log('Current video source index:', currentVideoSource);
-  console.log('Current video source URL:', videoSources[currentVideoSource]);
-  console.log('Audience Agent Demo video should be:', videoSources[0]);
-
-  // Handle video loading when modal opens
-  useEffect(() => {
-    if (videoRef.current && showVideoModal) {
-      console.log('Modal opened, loading video...');
-      videoRef.current.load();
-    }
-  }, [showVideoModal]);
 
   const showSlide = (index: number) => {
     setCurrentSlideIndex(index);
@@ -171,13 +148,7 @@ export default function HomePage() {
                             {/* Play button overlay */}
                             <div 
                               className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 hover:bg-opacity-30 transition-all cursor-pointer group"
-                              onClick={() => {
-                                console.log('Video play button clicked');
-                                setVideoLoading(true);
-                                setVideoError(false);
-                                setCurrentVideoSource(0); // Reset to first video source
-                                setShowVideoModal(true);
-                              }}
+                              onClick={() => window.open('/demo-video.mp4', '_blank')}
                             >
                               <div className="text-center text-white">
                                 <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-opacity-30 transition-all">
@@ -469,92 +440,6 @@ export default function HomePage() {
         </section>
       </div>
 
-      {/* Video Modal - Shadow Box */}
-      {showVideoModal && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-4 backdrop-blur-sm"
-            onClick={(e) => {
-              if (e.target === e.currentTarget) {
-                setShowVideoModal(false);
-                setIsVideoPlaying(false);
-                setVideoError(false);
-                setVideoLoading(false);
-                if (videoRef.current) {
-                  videoRef.current.pause();
-                }
-              }
-            }}
-        >
-          <div className="relative w-full max-w-5xl bg-black rounded-2xl overflow-hidden shadow-2xl">
-            {videoError ? (
-              <div className="p-12 text-center text-white">
-                <div className="text-8xl mb-6">🎥</div>
-                <h3 className="text-3xl font-bold mb-6">Video Not Available</h3>
-                <p className="text-gray-300 mb-8 text-lg">The video demo is currently unavailable. Please try again later.</p>
-                <div className="space-x-4">
-                  <button
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-all transform hover:scale-105"
-                    onClick={() => {
-                      setShowVideoModal(false);
-                      setVideoError(false);
-                      setVideoLoading(false);
-                    }}
-                  >
-                    Close
-                  </button>
-                  <button
-                    className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 rounded-lg font-medium transition-all transform hover:scale-105"
-                    onClick={() => {
-                      setVideoError(false);
-                      setVideoLoading(true);
-                      // Try to reload the video
-                      if (videoRef.current) {
-                        videoRef.current.load();
-                      }
-                    }}
-                  >
-                    Retry
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="relative">
-                <div className="text-center text-white p-8">
-                  <h3 className="text-2xl font-bold mb-4">Audience Agent Demo</h3>
-                  <p className="mb-6">Click the button below to watch the demo video</p>
-                  <a 
-                    href="/demo-video.mp4" 
-                    target="_blank" 
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-medium transition-all transform hover:scale-105 inline-block"
-                  >
-                    ▶️ Watch Demo Video
-                  </a>
-                  <p className="mt-4 text-sm text-gray-300">
-                    Video will open in a new tab for best viewing experience
-                  </p>
-                </div>
-              </div>
-            )}
-            
-            {/* Close button */}
-            <button
-              className="absolute top-4 right-4 bg-black bg-opacity-70 hover:bg-opacity-90 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-medium transition-all z-10 transform hover:scale-110"
-              onClick={() => {
-                setShowVideoModal(false);
-                setIsVideoPlaying(false);
-                setVideoError(false);
-                setVideoLoading(false);
-                if (videoRef.current) {
-                  videoRef.current.pause();
-                }
-              }}
-              aria-label="Close video"
-            >
-              ✕
-            </button>
-          </div>
-        </div>
-      )}
     </>
   )
 }
