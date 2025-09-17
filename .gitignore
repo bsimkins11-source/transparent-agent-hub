@@ -113,5 +113,3 @@ Thumbs.db
 
 # GCP
 .gcloudignore
-*.mp4
-*.mov
