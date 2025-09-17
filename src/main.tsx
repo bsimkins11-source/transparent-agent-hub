@@ -14,3 +14,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 )
 // Force Vercel deployment Tue Sep 16 18:14:20 EDT 2025
 // Force deployment Tue Sep 16 22:21:18 EDT 2025
+// Force deployment $(date) - testing minimal config
