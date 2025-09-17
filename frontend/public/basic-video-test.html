@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basic Video Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        video { width: 100%; max-width: 600px; margin: 20px 0; }
+        .test { background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h1>Basic Video Test</h1>
+    
+    <div class="test">
+        <h3>Test 1: Direct Video</h3>
+        <video controls>
+            <source src="/demo-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <div class="test">
+        <h3>Test 2: Video with Error Handling</h3>
+        <video id="testVideo" controls>
+            <source src="/demo-video.mp4" type="video/mp4">
+            <source src="/test-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div id="status"></div>
+    </div>
+    
+    <div class="test">
+        <h3>Test 3: File Check</h3>
+        <div id="fileStatus"></div>
+    </div>
+
+    <script>
+        const video = document.getElementById('testVideo');
+        const status = document.getElementById('status');
+        const fileStatus = document.getElementById('fileStatus');
+        
+        video.addEventListener('loadstart', () => {
+            status.innerHTML = 'Loading...';
+        });
+        
+        video.addEventListener('canplay', () => {
+            status.innerHTML = 'Video can play!';
+        });
+        
+        video.addEventListener('play', () => {
+            status.innerHTML = 'Video is playing!';
+        });
+        
+        video.addEventListener('error', (e) => {
+            status.innerHTML = 'Error: ' + (e.target.error ? e.target.error.message : 'Unknown error');
+        });
+        
+        // Check file access
+        fetch('/demo-video.mp4')
+            .then(response => {
+                if (response.ok) {
+                    fileStatus.innerHTML = '✓ demo-video.mp4 is accessible';
+                } else {
+                    fileStatus.innerHTML = '✗ demo-video.mp4 error: ' + response.status;
+                }
+            })
+            .catch(error => {
+                fileStatus.innerHTML = '✗ demo-video.mp4 network error: ' + error.message;
+            });
+    </script>
+</body>
+</html>

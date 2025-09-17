@@ -3,49 +3,58 @@
 <head>
     <title>Simple Video Test</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        video { width: 400px; height: 300px; border: 2px solid #ccc; margin: 10px; }
-        .test { margin: 20px 0; padding: 10px; border: 1px solid #ddd; }
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
+        .container { max-width: 800px; margin: 0 auto; }
+        video { width: 100%; margin: 20px 0; border: 2px solid #ccc; }
+        .test { background: white; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 4px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <h1>Simple Video Test</h1>
-    
-    <div class="test">
-        <h3>Test 1: Basic video with controls</h3>
-        <video controls>
-            <source src="/demo-video.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-    
-    <div class="test">
-        <h3>Test 2: Video with autoplay (might be blocked)</h3>
-        <video controls autoplay muted>
-            <source src="/demo-video.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-    
-    <div class="test">
-        <h3>Test 3: Video with poster</h3>
-        <video controls poster="/audience-poster.jpg">
-            <source src="/demo-video.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-    
-    <script>
-        // Test video loading
-        const video = document.querySelector('video');
+    <div class="container">
+        <h1>Simple Video Test</h1>
         
-        video.addEventListener('loadstart', () => console.log('Load start'));
-        video.addEventListener('loadeddata', () => console.log('Loaded data'));
-        video.addEventListener('canplay', () => console.log('Can play'));
-        video.addEventListener('play', () => console.log('Playing'));
-        video.addEventListener('error', (e) => {
-            console.error('Video error:', e);
-            console.error('Error details:', e.target.error);
+        <div class="test">
+            <h3>Test 1: Direct Video</h3>
+            <video controls>
+                <source src="/demo-video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <p>If you see this video and can play it, the file is working.</p>
+        </div>
+        
+        <div class="test">
+            <h3>Test 2: Video with Poster</h3>
+            <video controls poster="/audience-poster.jpg">
+                <source src="/demo-video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        
+        <div class="test">
+            <h3>File Check</h3>
+            <p>Checking if video files exist...</p>
+            <div id="status"></div>
+        </div>
+    </div>
+
+    <script>
+        // Check if files exist
+        const files = ['/demo-video.mp4', '/test-video.mp4', '/audience-poster.jpg'];
+        const status = document.getElementById('status');
+        
+        files.forEach(file => {
+            fetch(file)
+                .then(response => {
+                    if (response.ok) {
+                        status.innerHTML += `<p style="color: green;">✓ ${file} - OK (${response.status})</p>`;
+                    } else {
+                        status.innerHTML += `<p style="color: red;">✗ ${file} - Error (${response.status})</p>`;
+                    }
+                })
+                .catch(error => {
+                    status.innerHTML += `<p style="color: red;">✗ ${file} - Network Error: ${error.message}</p>`;
+                });
         });
     </script>
 </body>
